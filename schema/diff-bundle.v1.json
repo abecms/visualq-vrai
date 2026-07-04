@@ -1,0 +1,1178 @@
+{
+  "$defs": {
+    "AiDiffAnalysis": {
+      "properties": {
+        "explanation": {
+          "title": "Explanation",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "critical",
+            "major",
+            "minor",
+            "cosmetic"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "confidence": {
+          "title": "Confidence",
+          "type": "number"
+        },
+        "actionRecommended": {
+          "enum": [
+            "approve",
+            "investigate",
+            "reject"
+          ],
+          "title": "Actionrecommended",
+          "type": "string"
+        }
+      },
+      "required": [
+        "explanation",
+        "severity",
+        "category",
+        "confidence",
+        "actionRecommended"
+      ],
+      "title": "AiDiffAnalysis",
+      "type": "object"
+    },
+    "BBox": {
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        },
+        "width": {
+          "title": "Width",
+          "type": "number"
+        },
+        "height": {
+          "title": "Height",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "title": "BBox",
+      "type": "object"
+    },
+    "BlockDiffResult": {
+      "properties": {
+        "blockId": {
+          "title": "Blockid",
+          "type": "string"
+        },
+        "selector": {
+          "title": "Selector",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/BBox"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "mode": {
+          "title": "Mode",
+          "type": "string"
+        },
+        "diffPixelCount": {
+          "title": "Diffpixelcount",
+          "type": "number"
+        },
+        "diffPercentage": {
+          "title": "Diffpercentage",
+          "type": "number"
+        },
+        "childCount": {
+          "title": "Childcount",
+          "type": "integer"
+        },
+        "children": {
+          "items": {
+            "$ref": "#/$defs/ElementDiffResult"
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "appliedRuleId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Appliedruleid"
+        }
+      },
+      "required": [
+        "blockId",
+        "selector",
+        "title",
+        "kind",
+        "bbox",
+        "status",
+        "mode",
+        "diffPixelCount",
+        "diffPercentage",
+        "childCount"
+      ],
+      "title": "BlockDiffResult",
+      "type": "object"
+    },
+    "BundleImages": {
+      "properties": {
+        "baselinePng": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Baselinepng"
+        },
+        "testPng": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Testpng"
+        },
+        "diffPng": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Diffpng"
+        },
+        "baselineDomMap": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Baselinedommap"
+        },
+        "testDomMap": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Testdommap"
+        }
+      },
+      "title": "BundleImages",
+      "type": "object"
+    },
+    "CiContext": {
+      "properties": {
+        "commitSha": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Commitsha"
+        },
+        "branch": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Branch"
+        },
+        "prNumber": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prnumber"
+        },
+        "prTitle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prtitle"
+        },
+        "isMainBranch": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ismainbranch"
+        },
+        "jiraKey": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Jirakey"
+        }
+      },
+      "title": "CiContext",
+      "type": "object"
+    },
+    "DiffBundleLabel": {
+      "properties": {
+        "verdict": {
+          "anyOf": [
+            {
+              "enum": [
+                "intentional_redesign",
+                "accidental_regression",
+                "platform_constraint"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verdict"
+        },
+        "verdictSource": {
+          "anyOf": [
+            {
+              "enum": [
+                "viewer",
+                "slack",
+                "mcp",
+                "backfill-approve",
+                "synthetic"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verdictsource"
+        },
+        "verdictAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verdictat"
+        }
+      },
+      "title": "DiffBundleLabel",
+      "type": "object"
+    },
+    "DiffResultRow": {
+      "description": "Single VRT diff row \u2014 mirrors worker DiffResult.",
+      "properties": {
+        "scenario": {
+          "title": "Scenario",
+          "type": "string"
+        },
+        "viewport": {
+          "title": "Viewport",
+          "type": "string"
+        },
+        "browser": {
+          "title": "Browser",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "fail"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "misMatchPercentage": {
+          "title": "Mismatchpercentage",
+          "type": "number"
+        },
+        "diffPixels": {
+          "title": "Diffpixels",
+          "type": "number"
+        },
+        "totalPixels": {
+          "title": "Totalpixels",
+          "type": "number"
+        },
+        "dimensions": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Dimensions",
+          "type": "object"
+        },
+        "hasContentRules": {
+          "default": false,
+          "title": "Hascontentrules",
+          "type": "boolean"
+        },
+        "shiftRegions": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ShiftRegion"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Shiftregions"
+        },
+        "hasShift": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hasshift"
+        },
+        "elementResults": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ElementDiffResult"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Elementresults"
+        },
+        "blockResults": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/BlockDiffResult"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Blockresults"
+        },
+        "ignoredPixels": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ignoredpixels"
+        },
+        "effectiveTotalPixels": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effectivetotalpixels"
+        },
+        "staleRules": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stalerules"
+        },
+        "aiAnalysis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AiDiffAnalysis"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "baselineHeight": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Baselineheight"
+        }
+      },
+      "required": [
+        "scenario",
+        "viewport",
+        "browser",
+        "status",
+        "misMatchPercentage",
+        "diffPixels",
+        "totalPixels",
+        "dimensions"
+      ],
+      "title": "DiffResultRow",
+      "type": "object"
+    },
+    "ElementDiffResult": {
+      "properties": {
+        "selector": {
+          "title": "Selector",
+          "type": "string"
+        },
+        "tag": {
+          "title": "Tag",
+          "type": "string"
+        },
+        "ariaLabel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Arialabel"
+        },
+        "semanticLabel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Semanticlabel"
+        },
+        "bbox": {
+          "$ref": "#/$defs/BBox"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "mode": {
+          "title": "Mode",
+          "type": "string"
+        },
+        "diffPixelCount": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Diffpixelcount"
+        },
+        "diffPercentage": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Diffpercentage"
+        },
+        "dimensionDelta": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dimensiondelta"
+        },
+        "positionDelta": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Positiondelta"
+        },
+        "appliedRuleId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Appliedruleid"
+        },
+        "matchConfidence": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Matchconfidence"
+        }
+      },
+      "required": [
+        "selector",
+        "tag",
+        "bbox",
+        "status",
+        "mode"
+      ],
+      "title": "ElementDiffResult",
+      "type": "object"
+    },
+    "FigmaIntentSignals": {
+      "properties": {
+        "figmaDesignChangedRecently": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Figmadesignchangedrecently"
+        },
+        "daysSinceFigmaVersion": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dayssincefigmaversion"
+        },
+        "figmaAlignmentBaseline": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Figmaalignmentbaseline"
+        },
+        "figmaAlignmentDelta": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Figmaalignmentdelta"
+        }
+      },
+      "title": "FigmaIntentSignals",
+      "type": "object"
+    },
+    "GitHubIntentSignals": {
+      "properties": {
+        "commitChangedSinceBaseline": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Commitchangedsincebaseline"
+        },
+        "prFilesChanged": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prfileschanged"
+        },
+        "uiFilesChanged": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Uifileschanged"
+        },
+        "cssLinesChanged": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Csslineschanged"
+        },
+        "prTitleType": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prtitletype"
+        },
+        "prHasDesignLabel": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prhasdesignlabel"
+        },
+        "changedFilesMatchPage": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Changedfilesmatchpage"
+        }
+      },
+      "title": "GitHubIntentSignals",
+      "type": "object"
+    },
+    "HistoricalRunSummary": {
+      "properties": {
+        "runId": {
+          "title": "Runid",
+          "type": "string"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "title": "Createdat",
+          "type": "string"
+        },
+        "misMatchPercentage": {
+          "title": "Mismatchpercentage",
+          "type": "number"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "verdict": {
+          "anyOf": [
+            {
+              "enum": [
+                "intentional_redesign",
+                "accidental_regression",
+                "platform_constraint"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verdict"
+        },
+        "diffBBox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BBox"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "runId",
+        "createdAt",
+        "misMatchPercentage",
+        "status"
+      ],
+      "title": "HistoricalRunSummary",
+      "type": "object"
+    },
+    "IntentSignals": {
+      "properties": {
+        "github": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GitHubIntentSignals"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "jira": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JiraIntentSignals"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "figma": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FigmaIntentSignals"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "IntentSignals",
+      "type": "object"
+    },
+    "JiraIntentSignals": {
+      "properties": {
+        "jiraKeyPresent": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Jirakeypresent"
+        },
+        "jiraIssueIsStory": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Jiraissueisstory"
+        },
+        "jiraIssueIsBug": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Jiraissueisbug"
+        },
+        "jiraHasDesignLabel": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Jirahasdesignlabel"
+        }
+      },
+      "title": "JiraIntentSignals",
+      "type": "object"
+    },
+    "RunContext": {
+      "properties": {
+        "runId": {
+          "title": "Runid",
+          "type": "string"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "title": "Createdat",
+          "type": "string"
+        },
+        "trigger": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trigger"
+        },
+        "environmentId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Environmentid"
+        },
+        "pageType": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pagetype"
+        },
+        "envIsProd": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Envisprod"
+        },
+        "ci": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CiContext"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "siblingResults": {
+          "items": {
+            "$ref": "#/$defs/DiffResultRow"
+          },
+          "title": "Siblingresults",
+          "type": "array"
+        },
+        "scenarioConfig": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scenarioconfig"
+        }
+      },
+      "required": [
+        "runId",
+        "createdAt"
+      ],
+      "title": "RunContext",
+      "type": "object"
+    },
+    "ShiftRegion": {
+      "properties": {
+        "type": {
+          "enum": [
+            "insertion",
+            "deletion"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        },
+        "height": {
+          "title": "Height",
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "y",
+        "height"
+      ],
+      "title": "ShiftRegion",
+      "type": "object"
+    }
+  },
+  "description": "One diff sample \u2014 input to featurization and triage.",
+  "properties": {
+    "bundleVersion": {
+      "const": 1,
+      "default": 1,
+      "title": "Bundleversion",
+      "type": "integer"
+    },
+    "sampleId": {
+      "title": "Sampleid",
+      "type": "string"
+    },
+    "orgId": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Orgid"
+    },
+    "projectId": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Projectid"
+    },
+    "scenarioId": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Scenarioid"
+    },
+    "diff": {
+      "$ref": "#/$defs/DiffResultRow"
+    },
+    "images": {
+      "$ref": "#/$defs/BundleImages"
+    },
+    "runContext": {
+      "$ref": "#/$defs/RunContext"
+    },
+    "intentSignals": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/IntentSignals"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "history": {
+      "items": {
+        "$ref": "#/$defs/HistoricalRunSummary"
+      },
+      "title": "History",
+      "type": "array"
+    },
+    "label": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DiffBundleLabel"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "sampleId",
+    "diff",
+    "runContext"
+  ],
+  "title": "DiffBundle",
+  "type": "object"
+}

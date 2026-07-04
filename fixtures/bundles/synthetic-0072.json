@@ -1,0 +1,79 @@
+{
+  "bundleVersion": 1,
+  "sampleId": "synthetic-0072",
+  "orgId": null,
+  "projectId": "demo-project",
+  "scenarioId": null,
+  "diff": {
+    "scenario": "home",
+    "viewport": "desktop",
+    "browser": "chromium",
+    "status": "fail",
+    "misMatchPercentage": 8.694159376489628,
+    "diffPixels": 100156.0,
+    "totalPixels": 1152000.0,
+    "dimensions": {
+      "width": 1280.0,
+      "height": 900.0
+    },
+    "hasContentRules": false,
+    "shiftRegions": null,
+    "hasShift": null,
+    "elementResults": null,
+    "blockResults": null,
+    "ignoredPixels": null,
+    "effectiveTotalPixels": null,
+    "staleRules": null,
+    "aiAnalysis": null,
+    "baselineHeight": 900.0
+  },
+  "images": {
+    "baselinePng": null,
+    "testPng": null,
+    "diffPng": "fixtures/images/synthetic-0072_diff.png",
+    "baselineDomMap": null,
+    "testDomMap": null
+  },
+  "runContext": {
+    "runId": "run-synthetic-0072",
+    "createdAt": "2026-01-04T00:00:00Z",
+    "trigger": "ci",
+    "environmentId": null,
+    "pageType": null,
+    "envIsProd": true,
+    "ci": null,
+    "siblingResults": [
+      {
+        "scenario": "home",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "fail",
+        "misMatchPercentage": 6.955327501191703,
+        "diffPixels": 100.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null
+      }
+    ],
+    "scenarioConfig": null
+  },
+  "intentSignals": null,
+  "history": [],
+  "label": {
+    "verdict": "intentional_redesign",
+    "verdictSource": "synthetic",
+    "verdictAt": null
+  }
+}

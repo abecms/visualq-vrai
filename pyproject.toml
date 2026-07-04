@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vrt-triage"
+version = "0.1.0"
+description = "Open-source VRT diff triage: 3-class classification with TabICL, heuristics, and SHAP explanations"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.11"
+authors = [{ name = "VisualQ" }]
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.32.0",
+  "pydantic>=2.9.0",
+  "numpy>=1.26.0",
+  "pandas>=2.2.0",
+  "scipy>=1.14.0",
+  "scikit-learn>=1.5.0",
+  "pillow>=10.4.0",
+  "pyarrow>=17.0.0",
+  "httpx>=0.27.0",
+  "tabicl[shap]>=0.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-asyncio>=0.24.0",
+]
+
+[project.scripts]
+vrt-triage = "vrt_triage.cli.demo:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
