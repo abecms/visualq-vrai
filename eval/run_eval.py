@@ -6,9 +6,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from vrt_triage.eval.harness import evaluate_group_holdout, evaluate_heuristic
-from vrt_triage.features.extract import bundles_to_dataframe
-from vrt_triage.schema.bundle import DiffBundle
+from visualq_vrai.eval.harness import evaluate_group_holdout, evaluate_heuristic
+from visualq_vrai.features.extract import bundles_to_dataframe
+from visualq_vrai.schema.bundle import DiffBundle
 
 
 def main() -> None:

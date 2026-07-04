@@ -7,14 +7,14 @@ from typing import Any
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
-from vrt_triage.schema.feature_spec import SCHEMA_VERSION
-from vrt_triage.service.predict import (
+from visualq_vrai.schema.feature_spec import SCHEMA_VERSION
+from visualq_vrai.service.predict import (
     _decode_parquet,
     predict_heuristic,
     predict_tabicl,
 )
 
-app = FastAPI(title="vrt-triage", version="0.1.0")
+app = FastAPI(title="visualq-vrai", version="0.1.0")
 
 
 class PredictRequest(BaseModel):

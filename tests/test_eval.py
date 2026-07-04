@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 
 import pandas as pd
 
-from vrt_triage.eval.harness import evaluate_group_holdout, evaluate_heuristic
-from vrt_triage.schema.feature_spec import FEATURE_COLUMNS, LABEL_COLUMN
+from visualq_vrai.eval.harness import evaluate_group_holdout, evaluate_heuristic
+from visualq_vrai.schema.feature_spec import FEATURE_COLUMNS, LABEL_COLUMN
 
 
 def _synthetic_df(n: int = 60) -> pd.DataFrame:

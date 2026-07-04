@@ -1,4 +1,4 @@
-# vrt-triage
+# visualq-vrai
 
 Open-source **visual regression diff triage** for VisualQ and compatible VRT pipelines.
 
@@ -27,15 +27,15 @@ pip install -e ".[dev]"
 pytest
 
 # Demo on bundled fixtures
-vrt-triage fixtures/bundles
+visualq-vrai fixtures/bundles
 
 # Start prediction API
-uvicorn vrt_triage.service.app:app --reload --port 8090
+uvicorn visualq_vrai.service.app:app --reload --port 8090
 ```
 
 ## DiffBundle contract
 
-See [`schema/diff-bundle.v1.json`](schema/diff-bundle.v1.json) and [`src/vrt_triage/schema/bundle.py`](src/vrt_triage/schema/bundle.py).
+See [`schema/diff-bundle.v1.json`](schema/diff-bundle.v1.json) and [`src/visualq_vrai/schema/bundle.py`](src/visualq_vrai/schema/bundle.py).
 
 Key fields:
 
@@ -52,7 +52,7 @@ VisualQ exports anonymized bundles via:
 
 ```bash
 cd visualq
-npx tsx scripts/export-diff-bundles.ts --org ORG --project PROJECT --out ../vrt-triage/fixtures/bundles
+npx tsx scripts/export-diff-bundles.ts --org ORG --project PROJECT --out ../visualq-vrai/fixtures/bundles
 ```
 
 After the hackathon, VisualQ calls `POST /predict` with live bundles (ECS Fargate `visualq-ml`).

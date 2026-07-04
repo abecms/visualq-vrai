@@ -9,9 +9,9 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import f1_score, roc_auc_score
 
-from vrt_triage.heuristic.triage import triage_heuristic
-from vrt_triage.schema.bundle import TriageClass
-from vrt_triage.schema.feature_spec import LABEL_COLUMN
+from visualq_vrai.heuristic.triage import triage_heuristic
+from visualq_vrai.schema.bundle import TriageClass
+from visualq_vrai.schema.feature_spec import LABEL_COLUMN
 
 
 @dataclass

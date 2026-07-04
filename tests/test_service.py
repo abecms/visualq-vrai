@@ -4,9 +4,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from vrt_triage.schema.feature_spec import FEATURE_COLUMNS, LABEL_COLUMN, MIN_CONTEXT_ROWS
-from vrt_triage.service.conformal import ConformalSelector
-from vrt_triage.service.predict import _check_context, predict_heuristic
+from visualq_vrai.schema.feature_spec import FEATURE_COLUMNS, LABEL_COLUMN, MIN_CONTEXT_ROWS
+from visualq_vrai.service.conformal import ConformalSelector
+from visualq_vrai.service.predict import _check_context, predict_heuristic
 
 
 def test_min_context_guard():

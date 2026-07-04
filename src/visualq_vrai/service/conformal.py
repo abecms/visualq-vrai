@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from vrt_triage.schema.bundle import TriageClass
+from visualq_vrai.schema.bundle import TriageClass
 
 
 @dataclass

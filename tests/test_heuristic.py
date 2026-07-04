@@ -2,8 +2,8 @@
 
 import math
 
-from vrt_triage.heuristic.triage import triage_heuristic
-from vrt_triage.schema.bundle import TriageClass
+from visualq_vrai.heuristic.triage import triage_heuristic
+from visualq_vrai.schema.bundle import TriageClass
 
 
 def _row(**overrides):

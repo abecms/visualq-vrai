@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import pytest
 from pydantic import ValidationError
 
-from vrt_triage.schema.bundle import BUNDLE_VERSION, DiffBundle, DiffResultRow, RunContext
+from visualq_vrai.schema.bundle import BUNDLE_VERSION, DiffBundle, DiffResultRow, RunContext
 
 
 def test_invalid_bundle_version_rejected():

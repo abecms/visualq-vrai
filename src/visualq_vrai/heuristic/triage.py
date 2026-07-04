@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from vrt_triage.schema.bundle import TriageClass
+from visualq_vrai.schema.bundle import TriageClass
 
 
 @dataclass

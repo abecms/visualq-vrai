@@ -1,4 +1,4 @@
-"""DiffBundle schema — versioned contract between VisualQ and vrt-triage."""
+"""DiffBundle schema — versioned contract between VisualQ and visualq-vrai."""
 
 from __future__ import annotations
 

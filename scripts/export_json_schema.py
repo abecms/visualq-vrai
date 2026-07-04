@@ -3,7 +3,7 @@
 import json
 from pathlib import Path
 
-from vrt_triage.schema.bundle import DiffBundle
+from visualq_vrai.schema.bundle import DiffBundle
 
 if __name__ == "__main__":
     schema = DiffBundle.model_json_schema()

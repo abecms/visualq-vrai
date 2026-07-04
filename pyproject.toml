@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "vrt-triage"
+name = "visualq-vrai"
 version = "0.1.0"
-description = "Open-source VRT diff triage: 3-class classification with TabICL, heuristics, and SHAP explanations"
+description = "VisualQ VRAI — open-source VRT diff triage with TabICL, heuristics, and SHAP"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.11"
@@ -31,7 +31,7 @@ dev = [
 ]
 
 [project.scripts]
-vrt-triage = "vrt_triage.cli.demo:main"
+visualq-vrai = "visualq_vrai.cli.demo:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

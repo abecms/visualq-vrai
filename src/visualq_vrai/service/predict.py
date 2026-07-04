@@ -10,16 +10,16 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from vrt_triage.heuristic.triage import triage_heuristic
-from vrt_triage.schema.bundle import TriageClass
-from vrt_triage.schema.feature_spec import (
+from visualq_vrai.heuristic.triage import triage_heuristic
+from visualq_vrai.schema.bundle import TriageClass
+from visualq_vrai.schema.feature_spec import (
     FEATURE_COLUMNS,
     LABEL_COLUMN,
     MIN_CLASS_EXAMPLES,
     MIN_CONTEXT_ROWS,
     SCHEMA_VERSION,
 )
-from vrt_triage.service.conformal import ConformalSelector
+from visualq_vrai.service.conformal import ConformalSelector
 
 
 @dataclass

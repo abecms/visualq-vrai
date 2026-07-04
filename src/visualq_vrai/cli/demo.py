@@ -7,11 +7,11 @@ import json
 import sys
 from pathlib import Path
 
-from vrt_triage.features.extract import bundles_to_dataframe, featurize_bundle
-from vrt_triage.heuristic.triage import triage_heuristic
-from vrt_triage.schema.bundle import DiffBundle
-from vrt_triage.schema.feature_spec import LABEL_COLUMN, MIN_CONTEXT_ROWS
-from vrt_triage.service.predict import predict_tabicl
+from visualq_vrai.features.extract import bundles_to_dataframe, featurize_bundle
+from visualq_vrai.heuristic.triage import triage_heuristic
+from visualq_vrai.schema.bundle import DiffBundle
+from visualq_vrai.schema.feature_spec import LABEL_COLUMN, MIN_CONTEXT_ROWS
+from visualq_vrai.service.predict import predict_tabicl
 
 
 def load_bundles(directory: Path) -> list[DiffBundle]:

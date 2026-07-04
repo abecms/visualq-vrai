@@ -1,12 +1,12 @@
 """Schema package exports."""
 
-from vrt_triage.schema.bundle import (
+from visualq_vrai.schema.bundle import (
     BUNDLE_VERSION,
     DiffBundle,
     TriageClass,
     TriClass,
 )
-from vrt_triage.schema.feature_spec import (
+from visualq_vrai.schema.feature_spec import (
     FEATURE_COLUMNS,
     LABEL_COLUMN,
     MIN_CLASS_EXAMPLES,

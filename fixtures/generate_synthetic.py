@@ -10,7 +10,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-from vrt_triage.schema.bundle import (
+from visualq_vrai.schema.bundle import (
     BUNDLE_VERSION,
     BundleImages,
     DiffBundle,

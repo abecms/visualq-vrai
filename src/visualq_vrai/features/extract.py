@@ -9,9 +9,9 @@ from typing import Any
 
 import numpy as np
 
-from vrt_triage.features.spatial import extract_spatial_features
-from vrt_triage.schema.bundle import DiffBundle, ElementDiffResult
-from vrt_triage.schema.feature_spec import (
+from visualq_vrai.features.spatial import extract_spatial_features
+from visualq_vrai.schema.bundle import DiffBundle, ElementDiffResult
+from visualq_vrai.schema.feature_spec import (
     AI_CATEGORIES,
     BROWSERS,
     FEATURE_COLUMNS,

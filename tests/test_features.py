@@ -5,8 +5,8 @@ from pathlib import Path
 
 import numpy as np
 
-from vrt_triage.features.extract import featurize_bundle
-from vrt_triage.schema.bundle import (
+from visualq_vrai.features.extract import featurize_bundle
+from visualq_vrai.schema.bundle import (
     BUNDLE_VERSION,
     BundleImages,
     DiffBundle,
@@ -14,7 +14,7 @@ from vrt_triage.schema.bundle import (
     DiffResultRow,
     RunContext,
 )
-from vrt_triage.schema.feature_spec import FEATURE_COLUMNS, LABEL_COLUMN
+from visualq_vrai.schema.feature_spec import FEATURE_COLUMNS, LABEL_COLUMN
 
 
 def _bundle(**kwargs) -> DiffBundle:

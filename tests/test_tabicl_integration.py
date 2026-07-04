@@ -5,10 +5,10 @@ from pathlib import Path
 
 import pytest
 
-from vrt_triage.features.extract import bundles_to_dataframe
-from vrt_triage.schema.bundle import DiffBundle
-from vrt_triage.schema.feature_spec import LABEL_COLUMN, MIN_CONTEXT_ROWS
-from vrt_triage.service.predict import predict_tabicl
+from visualq_vrai.features.extract import bundles_to_dataframe
+from visualq_vrai.schema.bundle import DiffBundle
+from visualq_vrai.schema.feature_spec import LABEL_COLUMN, MIN_CONTEXT_ROWS
+from visualq_vrai.service.predict import predict_tabicl
 
 pytestmark = pytest.mark.slow
 
