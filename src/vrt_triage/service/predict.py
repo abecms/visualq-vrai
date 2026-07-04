@@ -64,17 +64,60 @@ def _check_context(context_df: pd.DataFrame) -> str | None:
     return None
 
 
-def _top_shap_features(shap_values: np.ndarray, feature_names: list[str], top_k: int = 5) -> list[dict[str, float]]:
-    if shap_values.ndim == 1:
-        values = shap_values
+def _active_columns(context_df: pd.DataFrame, query_df: pd.DataFrame) -> list[str]:
+    """Columns with at least one observed value in context or query (TabICL drops all-NaN cols)."""
+    active: list[str] = []
+    for col in FEATURE_COLUMNS:
+        ctx_obs = col in context_df.columns and context_df[col].notna().any()
+        qry_obs = col in query_df.columns and query_df[col].notna().any()
+        if ctx_obs or qry_obs:
+            active.append(col)
+    if not active:
+        raise ValueError("No active feature columns — context and query are entirely NaN")
+    return active
+
+
+def _top_shap_features(
+    shap_values: np.ndarray,
+    feature_names: list[str],
+    class_index: int,
+    top_k: int = 5,
+) -> list[dict[str, float]]:
+    values = np.asarray(shap_values)
+    if values.ndim == 3:
+        row_values = values[0, :, class_index]
+    elif values.ndim == 2:
+        row_values = values[0] if values.shape[0] == 1 else values[:, class_index]
     else:
-        values = shap_values[0]
-    order = np.argsort(np.abs(values))[::-1][:top_k]
+        row_values = values
+    order = np.argsort(np.abs(row_values))[::-1][:top_k]
     return [
-        {"feature": feature_names[i], "shap": float(values[i])}
+        {"feature": feature_names[i], "shap": float(row_values[i])}
         for i in order
-        if not np.isnan(values[i])
+        if i < len(feature_names) and not np.isnan(row_values[i])
     ]
+
+
+def _compute_shap(model, x_query: pd.DataFrame, feature_names: list[str], class_indices: list[int]) -> list[list[dict[str, float]]]:
+    from tabicl.shap import get_shap_values
+
+    explanation = get_shap_values(model, x_query, attribute_names=feature_names)
+    values = np.asarray(explanation.values)
+    results: list[list[dict[str, float]]] = []
+    for i, pred_idx in enumerate(class_indices):
+        if values.ndim == 3:
+            row_values = values[i, :, pred_idx]
+        elif values.ndim == 2:
+            row_values = values[i]
+        else:
+            row_values = values
+        order = np.argsort(np.abs(row_values))[::-1][:5]
+        results.append([
+            {"feature": feature_names[j], "shap": float(row_values[j])}
+            for j in order
+            if j < len(feature_names) and not np.isnan(row_values[j])
+        ])
+    return results
 
 
 def predict_tabicl(
@@ -105,20 +148,18 @@ def predict_tabicl(
     from tabicl import TabICLClassifier
 
     labeled = context_df.dropna(subset=[LABEL_COLUMN]).copy()
-    x_context = labeled[FEATURE_COLUMNS]
+    active_cols = _active_columns(labeled, query_df)
+    x_context = labeled[active_cols]
     y_context = labeled[LABEL_COLUMN].astype(str)
-    x_query = query_df[FEATURE_COLUMNS]
+    x_query = query_df[active_cols]
 
     model = TabICLClassifier(kv_cache=True)
     model.fit(x_context, y_context)
     probas = model.predict_proba(x_query)
     classes = list(model.classes_)
 
-    shap_values = None
-    if hasattr(model, "explain"):
-        shap_values = model.explain(x_query)
-    elif hasattr(model, "shap"):
-        shap_values = model.shap(x_query)
+    pred_indices = [int(np.argmax(probas[i])) for i in range(len(probas))]
+    shap_by_row = _compute_shap(model, x_query, active_cols, pred_indices)
 
     # Calibration split: last 20% of labeled context by createdAt if present
     calib_df = labeled
@@ -128,7 +169,7 @@ def predict_tabicl(
     calib_df = calib_df.iloc[split:]
     selector = ConformalSelector(nominal_risk=0.02)
     if len(calib_df) >= 30:
-        calib_x = calib_df[FEATURE_COLUMNS]
+        calib_x = calib_df[active_cols]
         calib_y = calib_df[LABEL_COLUMN].astype(str)
         calib_proba = model.predict_proba(calib_x)
         y_idx = np.array([TriageClass.index(v) for v in calib_y])
@@ -150,17 +191,7 @@ def predict_tabicl(
         pred_idx = int(np.argmax(probas[i]))
         pred_class = classes[pred_idx]
 
-        top_features: list[dict[str, float]] = []
-        if shap_values is not None:
-            if isinstance(shap_values, list):
-                top_features = _top_shap_features(np.array(shap_values[i]), FEATURE_COLUMNS)
-            else:
-                sv = np.array(shap_values)
-                if sv.ndim == 3:
-                    class_sv = sv[i, :, pred_idx]
-                    top_features = _top_shap_features(class_sv, FEATURE_COLUMNS)
-                elif sv.ndim == 2:
-                    top_features = _top_shap_features(sv[i], FEATURE_COLUMNS)
+        top_features = shap_by_row[i] if i < len(shap_by_row) else []
 
         decision = decisions[i]
         results.append(
