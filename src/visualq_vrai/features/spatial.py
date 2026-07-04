@@ -25,6 +25,10 @@ class SpatialFeatures:
     mean_region_compactness: float
     isolated_pixel_ratio: float
     max_region_aspect: float
+    # Union bbox of retained regions in absolute pixels (x, y, w, h);
+    # None when there is no diff or no image. Not a model feature — used by
+    # spatial_recurrence_iou / same_zone_cross_page_fraction in extract.py.
+    union_bbox_px: tuple[float, float, float, float] | None = None
 
 
 def _load_diff_mask(path: str | Path, width: int, height: int) -> np.ndarray:
@@ -96,7 +100,6 @@ def extract_spatial_features(
     if n_labels == 0:
         return _nan_spatial()
 
-    sizes = ndimage.sum(mask, labeled, index=range(1, n_labels + 1))
     regions: list[dict[str, float]] = []
     isolated_pixels = 0
 
@@ -166,6 +169,12 @@ def extract_spatial_features(
     union_max_y = max(r["max_y"] for r in regions)
     bbox_w = (union_max_x - union_min_x + 1) / width
     bbox_h = (union_max_y - union_min_y + 1) / height
+    union_bbox_px = (
+        union_min_x,
+        union_min_y,
+        union_max_x - union_min_x + 1,
+        union_max_y - union_min_y + 1,
+    )
 
     weighted_cx = sum(r["cx"] * r["count"] for r in regions) / sum(r["count"] for r in regions)
     weighted_cy = sum(r["cy"] * r["count"] for r in regions) / sum(r["count"] for r in regions)
@@ -183,4 +192,5 @@ def extract_spatial_features(
         mean_region_compactness=float(np.mean([r["compactness"] for r in regions])),
         isolated_pixel_ratio=isolated_pixels / max(diff_count, 1),
         max_region_aspect=max(r["aspect"] for r in regions),
+        union_bbox_px=union_bbox_px,
     )

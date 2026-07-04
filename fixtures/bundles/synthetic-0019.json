@@ -5,12 +5,12 @@
   "projectId": "demo-project",
   "scenarioId": null,
   "diff": {
-    "scenario": "home",
+    "scenario": "contact",
     "viewport": "desktop",
     "browser": "chromium",
     "status": "fail",
-    "misMatchPercentage": 2.1433931620438,
-    "diffPixels": 24691.0,
+    "misMatchPercentage": 2.2399355394481812,
+    "diffPixels": 25804.0,
     "totalPixels": 1152000.0,
     "dimensions": {
       "width": 1280.0,
@@ -19,13 +19,60 @@
     "hasContentRules": false,
     "shiftRegions": null,
     "hasShift": null,
-    "elementResults": null,
+    "elementResults": [
+      {
+        "selector": "main > form button.submit",
+        "tag": "button",
+        "ariaLabel": null,
+        "semanticLabel": null,
+        "bbox": {
+          "x": 141.0,
+          "y": 177.0,
+          "width": 241.0,
+          "height": 218.0
+        },
+        "status": "visual_change",
+        "mode": "strict",
+        "diffPixelCount": null,
+        "diffPercentage": 62.079688401380174,
+        "dimensionDelta": null,
+        "positionDelta": null,
+        "appliedRuleId": null,
+        "matchConfidence": 0.9582932488730426
+      },
+      {
+        "selector": "footer",
+        "tag": "footer",
+        "ariaLabel": null,
+        "semanticLabel": null,
+        "bbox": {
+          "x": 0.0,
+          "y": 820.0,
+          "width": 1280.0,
+          "height": 80.0
+        },
+        "status": "unchanged",
+        "mode": "strict",
+        "diffPixelCount": null,
+        "diffPercentage": null,
+        "dimensionDelta": null,
+        "positionDelta": null,
+        "appliedRuleId": null,
+        "matchConfidence": 1.0
+      }
+    ],
     "blockResults": null,
     "ignoredPixels": null,
     "effectiveTotalPixels": null,
     "staleRules": null,
     "aiAnalysis": null,
-    "baselineHeight": 900.0
+    "baselineHeight": 900.0,
+    "diffBBox": {
+      "x": 141.0,
+      "y": 177.0,
+      "width": 241.0,
+      "height": 218.0
+    }
   },
   "images": {
     "baselinePng": null,
@@ -41,15 +88,22 @@
     "environmentId": null,
     "pageType": null,
     "envIsProd": true,
-    "ci": null,
+    "ci": {
+      "commitSha": "56a2d49d9e5f8273",
+      "branch": "feature/877",
+      "prNumber": null,
+      "prTitle": null,
+      "isMainBranch": true,
+      "jiraKey": null
+    },
     "siblingResults": [
       {
-        "scenario": "home",
+        "scenario": "contact",
         "viewport": "desktop",
-        "browser": "chromium",
+        "browser": "firefox",
         "status": "fail",
-        "misMatchPercentage": 1.71471452963504,
-        "diffPixels": 100.0,
+        "misMatchPercentage": 2.4434064802693847,
+        "diffPixels": 1000.0,
         "totalPixels": 1152000.0,
         "dimensions": {
           "width": 1280.0,
@@ -64,13 +118,227 @@
         "effectiveTotalPixels": null,
         "staleRules": null,
         "aiAnalysis": null,
-        "baselineHeight": null
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "contact",
+        "viewport": "desktop",
+        "browser": "webkit",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "home",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "about",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "pricing",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "blog",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
       }
     ],
     "scenarioConfig": null
   },
-  "intentSignals": null,
-  "history": [],
+  "intentSignals": {
+    "github": {
+      "commitChangedSinceBaseline": true,
+      "prFilesChanged": 6,
+      "uiFilesChanged": true,
+      "cssLinesChanged": 32,
+      "prTitleType": "fix",
+      "prHasDesignLabel": false,
+      "changedFilesMatchPage": true
+    },
+    "jira": null,
+    "figma": null
+  },
+  "history": [
+    {
+      "runId": "hist-0",
+      "createdAt": "2025-12-22T19:00:00Z",
+      "misMatchPercentage": 0.17081088994815638,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-1",
+      "createdAt": "2025-12-23T19:00:00Z",
+      "misMatchPercentage": 0.029974209174736234,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-2",
+      "createdAt": "2025-12-24T19:00:00Z",
+      "misMatchPercentage": 0.054957388641844816,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-3",
+      "createdAt": "2025-12-25T19:00:00Z",
+      "misMatchPercentage": 0.09574507175111308,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-4",
+      "createdAt": "2025-12-26T19:00:00Z",
+      "misMatchPercentage": 0.08637128797967526,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-5",
+      "createdAt": "2025-12-27T19:00:00Z",
+      "misMatchPercentage": 0.11646268503131643,
+      "status": "fail",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-6",
+      "createdAt": "2025-12-28T19:00:00Z",
+      "misMatchPercentage": 0.010208750330032348,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-7",
+      "createdAt": "2025-12-29T19:00:00Z",
+      "misMatchPercentage": 0.19502755810862585,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-8",
+      "createdAt": "2025-12-30T19:00:00Z",
+      "misMatchPercentage": 0.11992263520330743,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-9",
+      "createdAt": "2025-12-31T19:00:00Z",
+      "misMatchPercentage": 0.06380494412817347,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    }
+  ],
   "label": {
     "verdict": "accidental_regression",
     "verdictSource": "synthetic",

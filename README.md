@@ -1,5 +1,7 @@
 # VisualQ VRAI
 
+[![CI](https://github.com/abecms/visualq-vrai/actions/workflows/ci.yml/badge.svg)](https://github.com/abecms/visualq-vrai/actions/workflows/ci.yml)
+
 **V**isual **R**egression **A**nalysis **I**ntelligence — open-source triage for visual regression test (VRT) diffs.
 
 When a screenshot comparison fails, VRAI helps you decide *what kind of failure it is* and what to do next — without reading every pixel manually.
@@ -71,6 +73,23 @@ visualq-vrai fixtures/bundles --query synthetic-0355
 
 ---
 
+## Quick start (review UI)
+
+VRAI ships a lightweight web UI to review diffs and label them (the labels
+feed the TabICL context):
+
+```bash
+VRAI_BUNDLES_DIR=fixtures/bundles uvicorn visualq_vrai.service.app:app --port 8090
+# open http://localhost:8090/ui
+```
+
+- Diffs sorted by regression probability, with predicted class and `source`
+  badge (`heuristic` vs `tabicl` — never silently mixed).
+- Verdict buttons / shortcuts: `a` approve (redesign), `r` regression,
+  `p` platform constraint. Verdicts are written **into the bundle JSON files**.
+- "Run TabICL" computes model triage once enough labels exist (300 minimum,
+  15 per class); below that the UI shows an explicit insufficient-data banner.
+
 ## Quick start (HTTP API)
 
 Start the service:
@@ -85,6 +104,13 @@ Health check:
 curl http://localhost:8090/health
 ```
 
+Or with Docker:
+
+```bash
+docker build -t visualq-vrai .
+docker run -p 8090:8090 -v "$PWD/fixtures/bundles:/data/bundles" visualq-vrai
+```
+
 ### Endpoints
 
 | Method | Path | Purpose |
@@ -92,6 +118,7 @@ curl http://localhost:8090/health
 | `GET` | `/health` | Liveness |
 | `POST` | `/predict` | TabICL triage (+ conformal gate, SHAP) |
 | `POST` | `/heuristic` | Rule-based triage only (cold start) |
+| `GET` | `/ui` | Review & labeling UI |
 
 Both `POST` endpoints accept **base64-encoded Parquet** tables (see [Preparing data](#preparing-data-from-diffbundles)).
 

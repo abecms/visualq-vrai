@@ -5,12 +5,12 @@
   "projectId": "demo-project",
   "scenarioId": null,
   "diff": {
-    "scenario": "home",
+    "scenario": "about",
     "viewport": "desktop",
     "browser": "chromium",
     "status": "fail",
-    "misMatchPercentage": 1.8547324744936242,
-    "diffPixels": 21366.0,
+    "misMatchPercentage": 4.4130183910773715,
+    "diffPixels": 50837.0,
     "totalPixels": 1152000.0,
     "dimensions": {
       "width": 1280.0,
@@ -19,13 +19,60 @@
     "hasContentRules": false,
     "shiftRegions": null,
     "hasShift": null,
-    "elementResults": null,
+    "elementResults": [
+      {
+        "selector": "main > form button.submit",
+        "tag": "button",
+        "ariaLabel": null,
+        "semanticLabel": null,
+        "bbox": {
+          "x": 511.0,
+          "y": 229.0,
+          "width": 280.0,
+          "height": 107.0
+        },
+        "status": "visual_change",
+        "mode": "strict",
+        "diffPixelCount": null,
+        "diffPercentage": 40.86097649734188,
+        "dimensionDelta": null,
+        "positionDelta": null,
+        "appliedRuleId": null,
+        "matchConfidence": 0.9850919305502647
+      },
+      {
+        "selector": "footer",
+        "tag": "footer",
+        "ariaLabel": null,
+        "semanticLabel": null,
+        "bbox": {
+          "x": 0.0,
+          "y": 820.0,
+          "width": 1280.0,
+          "height": 80.0
+        },
+        "status": "unchanged",
+        "mode": "strict",
+        "diffPixelCount": null,
+        "diffPercentage": null,
+        "dimensionDelta": null,
+        "positionDelta": null,
+        "appliedRuleId": null,
+        "matchConfidence": 1.0
+      }
+    ],
     "blockResults": null,
     "ignoredPixels": null,
     "effectiveTotalPixels": null,
     "staleRules": null,
     "aiAnalysis": null,
-    "baselineHeight": 900.0
+    "baselineHeight": 900.0,
+    "diffBBox": {
+      "x": 511.0,
+      "y": 229.0,
+      "width": 280.0,
+      "height": 107.0
+    }
   },
   "images": {
     "baselinePng": null,
@@ -44,12 +91,12 @@
     "ci": null,
     "siblingResults": [
       {
-        "scenario": "home",
+        "scenario": "about",
         "viewport": "desktop",
-        "browser": "chromium",
+        "browser": "firefox",
         "status": "fail",
-        "misMatchPercentage": 1.4837859795948996,
-        "diffPixels": 100.0,
+        "misMatchPercentage": 4.493591035589394,
+        "diffPixels": 1000.0,
         "totalPixels": 1152000.0,
         "dimensions": {
           "width": 1280.0,
@@ -64,13 +111,215 @@
         "effectiveTotalPixels": null,
         "staleRules": null,
         "aiAnalysis": null,
-        "baselineHeight": null
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "about",
+        "viewport": "desktop",
+        "browser": "webkit",
+        "status": "fail",
+        "misMatchPercentage": 4.84648887285441,
+        "diffPixels": 1000.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "home",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "pricing",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "blog",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "contact",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
       }
     ],
     "scenarioConfig": null
   },
   "intentSignals": null,
-  "history": [],
+  "history": [
+    {
+      "runId": "hist-0",
+      "createdAt": "2025-12-28T13:00:00Z",
+      "misMatchPercentage": 0.0754992279029473,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-1",
+      "createdAt": "2025-12-29T13:00:00Z",
+      "misMatchPercentage": 0.020861034711183977,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-2",
+      "createdAt": "2025-12-30T13:00:00Z",
+      "misMatchPercentage": 0.2799960790850216,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-3",
+      "createdAt": "2025-12-31T13:00:00Z",
+      "misMatchPercentage": 0.01618231190603616,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-4",
+      "createdAt": "2026-01-01T13:00:00Z",
+      "misMatchPercentage": 0.09146065784868279,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-5",
+      "createdAt": "2026-01-02T13:00:00Z",
+      "misMatchPercentage": 0.09427199315778265,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-6",
+      "createdAt": "2026-01-03T13:00:00Z",
+      "misMatchPercentage": 0.16110555921496192,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-7",
+      "createdAt": "2026-01-04T13:00:00Z",
+      "misMatchPercentage": 0.14452495138227686,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-8",
+      "createdAt": "2026-01-05T13:00:00Z",
+      "misMatchPercentage": 0.09709095004406607,
+      "status": "fail",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-9",
+      "createdAt": "2026-01-06T13:00:00Z",
+      "misMatchPercentage": 0.17281488656837937,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    }
+  ],
   "label": {
     "verdict": "accidental_regression",
     "verdictSource": "synthetic",

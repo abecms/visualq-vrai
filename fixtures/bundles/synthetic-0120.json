@@ -5,12 +5,12 @@
   "projectId": "demo-project",
   "scenarioId": null,
   "diff": {
-    "scenario": "home",
+    "scenario": "pricing",
     "viewport": "desktop",
     "browser": "chromium",
     "status": "fail",
-    "misMatchPercentage": 19.91644466730859,
-    "diffPixels": 229437.0,
+    "misMatchPercentage": 10.553187742967522,
+    "diffPixels": 121572.0,
     "totalPixels": 1152000.0,
     "dimensions": {
       "width": 1280.0,
@@ -25,7 +25,8 @@
     "effectiveTotalPixels": null,
     "staleRules": null,
     "aiAnalysis": null,
-    "baselineHeight": 900.0
+    "baselineHeight": 900.0,
+    "diffBBox": null
   },
   "images": {
     "baselinePng": null,
@@ -41,15 +42,22 @@
     "environmentId": null,
     "pageType": null,
     "envIsProd": true,
-    "ci": null,
+    "ci": {
+      "commitSha": "4e32b993e014ec53",
+      "branch": "feature/247",
+      "prNumber": null,
+      "prTitle": null,
+      "isMainBranch": true,
+      "jiraKey": null
+    },
     "siblingResults": [
       {
-        "scenario": "home",
+        "scenario": "pricing",
         "viewport": "desktop",
-        "browser": "chromium",
+        "browser": "firefox",
         "status": "fail",
-        "misMatchPercentage": 15.933155733846872,
-        "diffPixels": 100.0,
+        "misMatchPercentage": 11.431175366950434,
+        "diffPixels": 1000.0,
         "totalPixels": 1152000.0,
         "dimensions": {
           "width": 1280.0,
@@ -64,13 +72,247 @@
         "effectiveTotalPixels": null,
         "staleRules": null,
         "aiAnalysis": null,
-        "baselineHeight": null
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "pricing",
+        "viewport": "desktop",
+        "browser": "webkit",
+        "status": "fail",
+        "misMatchPercentage": 6.896882445567834,
+        "diffPixels": 1000.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "home",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "fail",
+        "misMatchPercentage": 7.024396729933665,
+        "diffPixels": 1000.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": {
+          "x": 0.0,
+          "y": 600.0,
+          "width": 1280.0,
+          "height": 226.0
+        }
+      },
+      {
+        "scenario": "about",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "fail",
+        "misMatchPercentage": 10.589331852895196,
+        "diffPixels": 1000.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": {
+          "x": 0.0,
+          "y": 600.0,
+          "width": 1280.0,
+          "height": 226.0
+        }
+      },
+      {
+        "scenario": "blog",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "fail",
+        "misMatchPercentage": 12.53850492620305,
+        "diffPixels": 1000.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": {
+          "x": 0.0,
+          "y": 600.0,
+          "width": 1280.0,
+          "height": 226.0
+        }
+      },
+      {
+        "scenario": "contact",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
       }
     ],
     "scenarioConfig": null
   },
-  "intentSignals": null,
-  "history": [],
+  "intentSignals": {
+    "github": {
+      "commitChangedSinceBaseline": true,
+      "prFilesChanged": 24,
+      "uiFilesChanged": true,
+      "cssLinesChanged": 340,
+      "prTitleType": "style",
+      "prHasDesignLabel": true,
+      "changedFilesMatchPage": true
+    },
+    "jira": {
+      "jiraKeyPresent": true,
+      "jiraIssueIsStory": true,
+      "jiraIssueIsBug": false,
+      "jiraHasDesignLabel": true
+    },
+    "figma": null
+  },
+  "history": [
+    {
+      "runId": "hist-0",
+      "createdAt": "2025-12-27T00:00:00Z",
+      "misMatchPercentage": 0.42452903598852476,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-1",
+      "createdAt": "2025-12-28T00:00:00Z",
+      "misMatchPercentage": 0.9875223506510532,
+      "status": "fail",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-2",
+      "createdAt": "2025-12-29T00:00:00Z",
+      "misMatchPercentage": 0.533918545934449,
+      "status": "fail",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-3",
+      "createdAt": "2025-12-30T00:00:00Z",
+      "misMatchPercentage": 0.8549388114168514,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-4",
+      "createdAt": "2025-12-31T00:00:00Z",
+      "misMatchPercentage": 0.7184127548245924,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-5",
+      "createdAt": "2026-01-01T00:00:00Z",
+      "misMatchPercentage": 0.41805551006048935,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-6",
+      "createdAt": "2026-01-02T00:00:00Z",
+      "misMatchPercentage": 0.3835282719529285,
+      "status": "fail",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-7",
+      "createdAt": "2026-01-03T00:00:00Z",
+      "misMatchPercentage": 0.7138504761756441,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-8",
+      "createdAt": "2026-01-04T00:00:00Z",
+      "misMatchPercentage": 0.4301798940082517,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-9",
+      "createdAt": "2026-01-05T00:00:00Z",
+      "misMatchPercentage": 0.19501061784572482,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    }
+  ],
   "label": {
     "verdict": "intentional_redesign",
     "verdictSource": "synthetic",

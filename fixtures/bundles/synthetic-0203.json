@@ -5,12 +5,12 @@
   "projectId": "demo-project",
   "scenarioId": null,
   "diff": {
-    "scenario": "home",
+    "scenario": "blog",
     "viewport": "desktop",
     "browser": "chromium",
     "status": "fail",
-    "misMatchPercentage": 0.7026072918518317,
-    "diffPixels": 8094.0,
+    "misMatchPercentage": 1.1750876534216865,
+    "diffPixels": 13537.0,
     "totalPixels": 1152000.0,
     "dimensions": {
       "width": 1280.0,
@@ -19,13 +19,55 @@
     "hasContentRules": false,
     "shiftRegions": null,
     "hasShift": null,
-    "elementResults": null,
+    "elementResults": [
+      {
+        "selector": "section.carousel",
+        "tag": "div",
+        "ariaLabel": null,
+        "semanticLabel": "carousel",
+        "bbox": {
+          "x": 1.0,
+          "y": 4.0,
+          "width": 1277.0,
+          "height": 894.0
+        },
+        "status": "dynamic",
+        "mode": "layout",
+        "diffPixelCount": 326.0270107799249,
+        "diffPercentage": 3.1650773620049,
+        "dimensionDelta": null,
+        "positionDelta": null,
+        "appliedRuleId": null,
+        "matchConfidence": 0.8295101240435143
+      },
+      {
+        "selector": "footer",
+        "tag": "footer",
+        "ariaLabel": null,
+        "semanticLabel": null,
+        "bbox": {
+          "x": 0.0,
+          "y": 820.0,
+          "width": 1280.0,
+          "height": 80.0
+        },
+        "status": "unchanged",
+        "mode": "strict",
+        "diffPixelCount": null,
+        "diffPercentage": null,
+        "dimensionDelta": null,
+        "positionDelta": null,
+        "appliedRuleId": null,
+        "matchConfidence": 1.0
+      }
+    ],
     "blockResults": null,
     "ignoredPixels": null,
     "effectiveTotalPixels": null,
     "staleRules": null,
     "aiAnalysis": null,
-    "baselineHeight": 900.0
+    "baselineHeight": 900.0,
+    "diffBBox": null
   },
   "images": {
     "baselinePng": null,
@@ -41,15 +83,22 @@
     "environmentId": null,
     "pageType": null,
     "envIsProd": true,
-    "ci": null,
+    "ci": {
+      "commitSha": "8fdfc543b015d2cb",
+      "branch": "main",
+      "prNumber": null,
+      "prTitle": null,
+      "isMainBranch": false,
+      "jiraKey": null
+    },
     "siblingResults": [
       {
-        "scenario": "home",
+        "scenario": "blog",
         "viewport": "desktop",
         "browser": "firefox",
         "status": "pass",
         "misMatchPercentage": 0.0,
-        "diffPixels": 100.0,
+        "diffPixels": 0.0,
         "totalPixels": 1152000.0,
         "dimensions": {
           "width": 1280.0,
@@ -64,13 +113,257 @@
         "effectiveTotalPixels": null,
         "staleRules": null,
         "aiAnalysis": null,
-        "baselineHeight": null
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "blog",
+        "viewport": "desktop",
+        "browser": "webkit",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "home",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "fail",
+        "misMatchPercentage": 1.064038314055016,
+        "diffPixels": 1000.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": {
+          "x": 334.0,
+          "y": 343.0,
+          "width": 120.0,
+          "height": 90.0
+        }
+      },
+      {
+        "scenario": "about",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "pricing",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
+      },
+      {
+        "scenario": "contact",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "pass",
+        "misMatchPercentage": 0.0,
+        "diffPixels": 0.0,
+        "totalPixels": 1152000.0,
+        "dimensions": {
+          "width": 1280.0,
+          "height": 900.0
+        },
+        "hasContentRules": false,
+        "shiftRegions": null,
+        "hasShift": null,
+        "elementResults": null,
+        "blockResults": null,
+        "ignoredPixels": null,
+        "effectiveTotalPixels": null,
+        "staleRules": null,
+        "aiAnalysis": null,
+        "baselineHeight": null,
+        "diffBBox": null
       }
     ],
     "scenarioConfig": null
   },
-  "intentSignals": null,
-  "history": [],
+  "intentSignals": {
+    "github": {
+      "commitChangedSinceBaseline": true,
+      "prFilesChanged": 0,
+      "uiFilesChanged": false,
+      "cssLinesChanged": 0,
+      "prTitleType": "chore",
+      "prHasDesignLabel": false,
+      "changedFilesMatchPage": false
+    },
+    "jira": null,
+    "figma": {
+      "figmaDesignChangedRecently": false,
+      "daysSinceFigmaVersion": 78.04914172579299,
+      "figmaAlignmentBaseline": 0.8421582115734446,
+      "figmaAlignmentDelta": 0.01112245593749089
+    }
+  },
+  "history": [
+    {
+      "runId": "hist-0",
+      "createdAt": "2025-12-30T11:00:00Z",
+      "misMatchPercentage": 0.5074238601857229,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-1",
+      "createdAt": "2025-12-31T11:00:00Z",
+      "misMatchPercentage": 1.6719835214811485,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-2",
+      "createdAt": "2026-01-01T11:00:00Z",
+      "misMatchPercentage": 1.2935034926957774,
+      "status": "fail",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-3",
+      "createdAt": "2026-01-02T11:00:00Z",
+      "misMatchPercentage": 1.5663897096381127,
+      "status": "fail",
+      "verdict": "intentional_redesign",
+      "diffBBox": {
+        "x": 200.0,
+        "y": 300.0,
+        "width": 500.0,
+        "height": 250.0
+      }
+    },
+    {
+      "runId": "hist-4",
+      "createdAt": "2026-01-03T11:00:00Z",
+      "misMatchPercentage": 1.6326335168862618,
+      "status": "fail",
+      "verdict": "intentional_redesign",
+      "diffBBox": {
+        "x": 200.0,
+        "y": 300.0,
+        "width": 500.0,
+        "height": 250.0
+      }
+    },
+    {
+      "runId": "hist-5",
+      "createdAt": "2026-01-04T11:00:00Z",
+      "misMatchPercentage": 1.46342040509653,
+      "status": "fail",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-6",
+      "createdAt": "2026-01-05T11:00:00Z",
+      "misMatchPercentage": 1.107119879992667,
+      "status": "pass",
+      "verdict": "intentional_redesign",
+      "diffBBox": {
+        "x": 200.0,
+        "y": 300.0,
+        "width": 500.0,
+        "height": 250.0
+      }
+    },
+    {
+      "runId": "hist-7",
+      "createdAt": "2026-01-06T11:00:00Z",
+      "misMatchPercentage": 0.3754097493536763,
+      "status": "pass",
+      "verdict": null,
+      "diffBBox": null
+    },
+    {
+      "runId": "hist-8",
+      "createdAt": "2026-01-07T11:00:00Z",
+      "misMatchPercentage": 1.6976945142108293,
+      "status": "fail",
+      "verdict": "intentional_redesign",
+      "diffBBox": {
+        "x": 200.0,
+        "y": 300.0,
+        "width": 500.0,
+        "height": 250.0
+      }
+    },
+    {
+      "runId": "hist-9",
+      "createdAt": "2026-01-08T11:00:00Z",
+      "misMatchPercentage": 1.3098230859920432,
+      "status": "fail",
+      "verdict": null,
+      "diffBBox": null
+    }
+  ],
   "label": {
     "verdict": "platform_constraint",
     "verdictSource": "synthetic",

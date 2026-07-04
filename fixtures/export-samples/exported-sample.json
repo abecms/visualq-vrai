@@ -1,0 +1,76 @@
+{
+  "bundleVersion": 1,
+  "sampleId": "3f2c1a9be4d7a0c5",
+  "orgId": "9a1b2c3d4e5f6a7b",
+  "projectId": "b7a6c5d4e3f2a1b0",
+  "diff": {
+    "scenario": "a1b2c3d4e5f6a7b8",
+    "viewport": "desktop",
+    "browser": "chromium",
+    "status": "fail",
+    "misMatchPercentage": 2.4173,
+    "diffPixels": 27851,
+    "totalPixels": 1152000,
+    "dimensions": { "width": 1280, "height": 900 },
+    "hasContentRules": false,
+    "shiftRegions": null,
+    "hasShift": null,
+    "elementResults": null,
+    "blockResults": null,
+    "ignoredPixels": null,
+    "effectiveTotalPixels": null,
+    "staleRules": null,
+    "aiAnalysis": null
+  },
+  "images": {
+    "baselinePng": null,
+    "testPng": null,
+    "diffPng": null,
+    "baselineDomMap": "embedded",
+    "testDomMap": null
+  },
+  "runContext": {
+    "runId": "c8d7e6f5a4b3c2d1",
+    "createdAt": "2026-06-15T14:22:07.000Z",
+    "trigger": "ci",
+    "environmentId": "d1e2f3a4b5c6d7e8",
+    "envIsProd": null,
+    "ci": {
+      "commitSha": "e9f8a7b6c5d4e3f2",
+      "branch": "f1a2b3c4d5e6f7a8",
+      "prNumber": 42,
+      "prTitle": "[redacted]",
+      "isMainBranch": false,
+      "jiraKey": "a9b8c7d6e5f4a3b2"
+    },
+    "siblingResults": [
+      {
+        "scenario": "a1b2c3d4e5f6a7b8",
+        "viewport": "desktop",
+        "browser": "firefox",
+        "status": "pass",
+        "misMatchPercentage": 0,
+        "diffPixels": 0,
+        "totalPixels": 1152000,
+        "dimensions": { "width": 1280, "height": 900 }
+      },
+      {
+        "scenario": "b2c3d4e5f6a7b8c9",
+        "viewport": "desktop",
+        "browser": "chromium",
+        "status": "fail",
+        "misMatchPercentage": 1.02,
+        "diffPixels": 11750,
+        "totalPixels": 1152000,
+        "dimensions": { "width": 1280, "height": 900 }
+      }
+    ]
+  },
+  "intentSignals": null,
+  "history": [],
+  "label": {
+    "verdict": "intentional_redesign",
+    "verdictSource": "backfill-approve",
+    "verdictAt": "2026-06-15T14:22:07.000Z"
+  }
+}

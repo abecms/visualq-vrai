@@ -512,6 +512,28 @@
           ],
           "default": null,
           "title": "Baselineheight"
+        },
+        "diffBBox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BBox"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "spatial": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SpatialStats"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "required": [
@@ -1078,6 +1100,103 @@
         "height"
       ],
       "title": "ShiftRegion",
+      "type": "object"
+    },
+    "SpatialStats": {
+      "description": "Worker-computed G2 stats (raw values \u2014 the featurizer applies log\ntransforms). Strict parity with `features/spatial.py` and the VisualQ\nworker's `diff-spatial.ts`.",
+      "properties": {
+        "regionCount": {
+          "title": "Regioncount",
+          "type": "number"
+        },
+        "largestRegionAreaRatio": {
+          "title": "Largestregionarearatio",
+          "type": "number"
+        },
+        "top3RegionAreaRatio": {
+          "title": "Top3Regionarearatio",
+          "type": "number"
+        },
+        "regionConcentration": {
+          "title": "Regionconcentration",
+          "type": "number"
+        },
+        "centroidXRel": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Centroidxrel"
+        },
+        "centroidYRel": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Centroidyrel"
+        },
+        "bboxCoverageW": {
+          "title": "Bboxcoveragew",
+          "type": "number"
+        },
+        "bboxCoverageH": {
+          "title": "Bboxcoverageh",
+          "type": "number"
+        },
+        "touchesEdgeCount": {
+          "title": "Touchesedgecount",
+          "type": "number"
+        },
+        "meanRegionCompactness": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Meanregioncompactness"
+        },
+        "isolatedPixelRatio": {
+          "title": "Isolatedpixelratio",
+          "type": "number"
+        },
+        "maxRegionAspect": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maxregionaspect"
+        }
+      },
+      "required": [
+        "regionCount",
+        "largestRegionAreaRatio",
+        "top3RegionAreaRatio",
+        "regionConcentration",
+        "bboxCoverageW",
+        "bboxCoverageH",
+        "touchesEdgeCount",
+        "isolatedPixelRatio"
+      ],
+      "title": "SpatialStats",
       "type": "object"
     }
   },

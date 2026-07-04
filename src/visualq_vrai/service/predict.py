@@ -19,7 +19,13 @@ from visualq_vrai.schema.feature_spec import (
     MIN_CONTEXT_ROWS,
     SCHEMA_VERSION,
 )
-from visualq_vrai.service.conformal import ConformalSelector
+from visualq_vrai.service.conformal import ConformalDecision, ConformalSelector
+
+# Minimum held-out rows required to calibrate the conformal selector. Below
+# this, predictions are served but auto-triage is disabled for the whole batch
+# (deferReason: calibration_too_small) — never a guessed threshold.
+MIN_CALIBRATION_ROWS = 40
+CALIBRATION_FRACTION = 0.15
 
 
 @dataclass
@@ -137,7 +143,11 @@ def predict_tabicl(
                 class_name=triage_heuristic(row).class_name,
                 probabilities={c.value: float("nan") for c in TriageClass.ordered()},
                 top_features=[],
-                conformal={"autoTriage": False, "riskLevel": float("nan")},
+                conformal={
+                    "autoTriage": False,
+                    "riskLevel": float("nan"),
+                    "deferReason": "insufficient_data",
+                },
                 source="heuristic",
                 insufficient_data=True,
                 insufficient_reason=insufficiency,
@@ -148,40 +158,64 @@ def predict_tabicl(
     from tabicl import TabICLClassifier
 
     labeled = context_df.dropna(subset=[LABEL_COLUMN]).copy()
+    if "createdAt" in labeled.columns:
+        labeled = labeled.sort_values("createdAt")
+
+    # Held-out calibration: the most recent verdicts never enter the ICL fit.
+    # Only carved out when the remaining fit set still satisfies MIN_CONTEXT_ROWS;
+    # otherwise predictions are served with auto-triage disabled for the batch.
+    holdout_size = max(int(len(labeled) * CALIBRATION_FRACTION), MIN_CALIBRATION_ROWS)
+    calibration_possible = len(labeled) - holdout_size >= MIN_CONTEXT_ROWS
+    if calibration_possible:
+        fit_df = labeled.iloc[:-holdout_size]
+        calib_df = labeled.iloc[-holdout_size:]
+    else:
+        fit_df = labeled
+        calib_df = labeled.iloc[0:0]
+
     active_cols = _active_columns(labeled, query_df)
-    x_context = labeled[active_cols]
-    y_context = labeled[LABEL_COLUMN].astype(str)
     x_query = query_df[active_cols]
 
     model = TabICLClassifier(kv_cache=True)
-    model.fit(x_context, y_context)
+    model.fit(fit_df[active_cols], fit_df[LABEL_COLUMN].astype(str))
     probas = model.predict_proba(x_query)
     classes = list(model.classes_)
 
     pred_indices = [int(np.argmax(probas[i])) for i in range(len(probas))]
     shap_by_row = _compute_shap(model, x_query, active_cols, pred_indices)
 
-    # Calibration split: last 20% of labeled context by createdAt if present
-    calib_df = labeled
-    if "createdAt" in labeled.columns:
-        calib_df = labeled.sort_values("createdAt")
-    split = max(int(len(calib_df) * 0.8), MIN_CONTEXT_ROWS)
-    calib_df = calib_df.iloc[split:]
-    selector = ConformalSelector(nominal_risk=0.02)
-    if len(calib_df) >= 30:
-        calib_x = calib_df[active_cols]
-        calib_y = calib_df[LABEL_COLUMN].astype(str)
-        calib_proba = model.predict_proba(calib_x)
-        y_idx = np.array([TriageClass.index(v) for v in calib_y])
-        selector.fit(calib_proba, y_idx)
-    else:
-        selector.threshold_ = 0.5
-
     class_order = [c.value for c in TriageClass.ordered()]
     idx_map = {cls: i for i, cls in enumerate(classes)}
+    # Selector operates in canonical class order; remap model output.
+    canonical_probas = np.column_stack([
+        probas[:, idx_map[cls]] if cls in idx_map else np.zeros(len(probas))
+        for cls in class_order
+    ])
+
+    if calibration_possible:
+        selector = ConformalSelector(nominal_risk=0.02)
+        calib_proba = model.predict_proba(calib_df[active_cols])
+        canonical_calib = np.column_stack([
+            calib_proba[:, idx_map[cls]] if cls in idx_map else np.zeros(len(calib_proba))
+            for cls in class_order
+        ])
+        y_idx = np.array([
+            TriageClass.index(v) for v in calib_df[LABEL_COLUMN].astype(str)
+        ])
+        selector.fit(canonical_calib, y_idx)
+        decisions = selector.decide(canonical_probas)
+    else:
+        decisions = [
+            ConformalDecision(
+                auto_triage=False,
+                risk_level=float(canonical_probas[i, TriageClass.index(TriageClass.REGRESSION.value)]),
+                predicted_class=classes[int(np.argmax(probas[i]))],
+                defer_reason="calibration_too_small",
+            )
+            for i in range(len(probas))
+        ]
 
     results: list[PredictResult] = []
-    decisions = selector.decide(probas)
 
     for i, row in enumerate(query_rows):
         prob_dict = {
@@ -222,7 +256,11 @@ def predict_heuristic(query_df: pd.DataFrame) -> list[PredictResult]:
                 class_name=h.class_name,
                 probabilities=probs,
                 top_features=[{"feature": r, "shap": 0.0} for r in (h.reasons or [])],
-                conformal={"autoTriage": False, "riskLevel": float("nan")},
+                conformal={
+                    "autoTriage": False,
+                    "riskLevel": float("nan"),
+                    "deferReason": None,
+                },
                 source="heuristic",
             )
         )

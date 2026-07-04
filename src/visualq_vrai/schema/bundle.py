@@ -33,6 +33,34 @@ class BBox(BaseModel):
     height: float
 
 
+class SpatialStats(BaseModel):
+    """Worker-computed G2 stats (raw values — the featurizer applies log
+    transforms). Strict parity with `features/spatial.py` and the VisualQ
+    worker's `diff-spatial.ts`."""
+
+    regionCount: float
+    largestRegionAreaRatio: float
+    top3RegionAreaRatio: float
+    regionConcentration: float
+    centroidXRel: float | None = None
+    centroidYRel: float | None = None
+    bboxCoverageW: float
+    bboxCoverageH: float
+    touchesEdgeCount: float
+    meanRegionCompactness: float | None = None
+    isolatedPixelRatio: float
+    maxRegionAspect: float | None = None
+
+
+class RelBBox(BaseModel):
+    """Bounding box in relative page coordinates (0–1), scale-invariant across pages."""
+
+    x: float = Field(ge=0.0, le=1.0)
+    y: float = Field(ge=0.0, le=1.0)
+    width: float = Field(ge=0.0, le=1.0)
+    height: float = Field(ge=0.0, le=1.0)
+
+
 class ShiftRegion(BaseModel):
     type: Literal["insertion", "deletion"]
     y: float
@@ -99,6 +127,14 @@ class DiffResultRow(BaseModel):
     staleRules: list[str] | None = None
     aiAnalysis: AiDiffAnalysis | None = None
     baselineHeight: float | None = None
+    # Union bounding box of diff regions, absolute pixels. Optional,
+    # backward-compatible: produced by the VisualQ worker (Phase 2) or left
+    # absent — visualq-vrai then derives it from the diff PNG when available.
+    diffBBox: BBox | None = None
+    # Worker-computed G2 spatial stats. When present, the featurizer uses
+    # them instead of re-deriving from the diff PNG (train/serve parity for
+    # live bundles built without image download).
+    spatial: SpatialStats | None = None
 
 
 class DOMMapNode(BaseModel):

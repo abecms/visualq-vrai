@@ -56,7 +56,8 @@ visualq-vrai/
 │   ├── features/        # Featurization (G1–G12) + spatial diff analysis
 │   ├── heuristic/       # Rule-based baseline (Phase 0)
 │   ├── service/         # FastAPI app, TabICL predict, conformal selector
-│   ├── eval/            # Evaluation harness (temporal + group splits)
+│   ├── ui/              # Review & labeling web UI (routes + store + static)
+│   ├── eval/            # Evaluation harness (temporal + group splits, ablation)
 │   └── cli/             # `visualq-vrai` demo command
 ├── tests/               # pytest suite
 ├── fixtures/
@@ -202,9 +203,17 @@ pytest
 # Single module
 pytest tests/test_features.py -v
 
-# Eval harness on fixtures
+# Eval harness on fixtures (heuristic always; model benchmarks opt-in)
 python eval/run_eval.py
+python eval/run_eval.py --tabicl --lightgbm --ablation   # needs ".[bench]" for LightGBM
 ```
+
+### Deployment gates
+
+`tests/test_eval_gates.py` encodes the contractual conditions for trusting
+the model layer (TabICL beats the heuristic floor, no auto-action outside the
+conformal selector, MIN_CONTEXT enforced, empirical conformal coverage).
+Never weaken a gate to make a change pass — fix the change.
 
 ### Test markers
 
@@ -230,7 +239,7 @@ python fixtures/generate_synthetic.py
 # Writes 360 bundles to fixtures/bundles/ + PNGs to fixtures/images/
 ```
 
-Patterns map to classes: `wide` → redesign, `block` → regression, `noise` → platform.
+Class signatures are controlled: `wide` full-width bands + broad run failure + design intent signals → redesign; `block` concentrated on interactive elements + high z-score → regression; `noise`/`recurring` isolated pixels, mono-browser, approved-zone recurrence → platform. Signals are noisy and connector blocks partially missing on purpose (coverage strata). `fixtures/export-samples/` holds a committed sample mirroring the private exporter output (round-trip guarded by `tests/test_export_roundtrip.py`).
 
 ### Real VisualQ data (private export)
 

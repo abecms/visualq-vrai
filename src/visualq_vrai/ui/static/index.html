@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VRAI — Diff Review</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --panel: #171a23;
+    --border: #2a2f3d;
+    --text: #e6e8ee;
+    --muted: #8b91a3;
+    --regression: #e5534b;
+    --redesign: #4c9aff;
+    --platform: #b08d2f;
+    --accent: #7c5cff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 { font-size: 16px; margin: 0; font-weight: 600; }
+  header .spacer { flex: 1; }
+  .banner {
+    padding: 10px 20px;
+    background: #2b2410;
+    color: #e8c96a;
+    border-bottom: 1px solid #4a3d16;
+    font-size: 13px;
+  }
+  .banner.hidden { display: none; }
+  main { display: flex; height: calc(100vh - 53px); }
+  #list-pane {
+    width: 460px;
+    min-width: 340px;
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+  }
+  #detail-pane { flex: 1; overflow-y: auto; padding: 20px; }
+  .filters {
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  select, button {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  button:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); border-color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; position: sticky; top: 0; background: var(--bg); }
+  tr.row { cursor: pointer; }
+  tr.row:hover { background: #1c2030; }
+  tr.row.selected { background: #232945; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .badge.accidental_regression { background: var(--regression); }
+  .badge.intentional_redesign { background: var(--redesign); }
+  .badge.platform_constraint { background: var(--platform); }
+  .badge.source {
+    background: transparent;
+    border: 1px solid var(--muted);
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .badge.source.tabicl { border-color: var(--accent); color: var(--accent); }
+  .prob { font-variant-numeric: tabular-nums; color: var(--muted); }
+  .verdict-dot { font-size: 15px; }
+  .images { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+  .images figure { margin: 0; flex: 1; min-width: 220px; }
+  .images figcaption { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+  .images img {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .meta-grid .cell {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+  .cell .k { color: var(--muted); font-size: 11px; }
+  .cell .v { font-size: 14px; margin-top: 2px; }
+  .verdict-bar { display: flex; gap: 10px; margin: 18px 0; align-items: center; }
+  .verdict-bar button { padding: 9px 16px; font-weight: 600; }
+  .verdict-bar button.v-redesign { border-color: var(--redesign); }
+  .verdict-bar button.v-regression { border-color: var(--regression); }
+  .verdict-bar button.v-platform { border-color: var(--platform); }
+  .verdict-bar button.active.v-redesign { background: var(--redesign); }
+  .verdict-bar button.active.v-regression { background: var(--regression); }
+  .verdict-bar button.active.v-platform { background: var(--platform); }
+  .kbd {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-family: monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .shap-row { display: flex; align-items: center; gap: 10px; margin: 4px 0; }
+  .shap-name { width: 240px; font-family: monospace; font-size: 12px; }
+  .shap-bar-wrap { flex: 1; height: 10px; background: var(--panel); border-radius: 5px; position: relative; }
+  .shap-bar { height: 100%; border-radius: 5px; position: absolute; }
+  .shap-bar.pos { background: var(--regression); left: 50%; }
+  .shap-bar.neg { background: var(--redesign); right: 50%; }
+  .shap-val { width: 70px; text-align: right; font-variant-numeric: tabular-nums; font-size: 12px; color: var(--muted); }
+  h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 22px 0 8px; }
+  pre {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    overflow-x: auto;
+    font-size: 12px;
+  }
+  .empty { color: var(--muted); padding: 40px; text-align: center; }
+  .probs { display: flex; gap: 14px; margin: 8px 0; }
+  .probs .p { display: flex; align-items: center; gap: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>VRAI — Diff Review</h1>
+  <span id="label-progress" class="prob"></span>
+  <div class="spacer"></div>
+  <button id="btn-tabicl" class="primary" title="Run TabICL triage on unlabeled bundles">Run TabICL</button>
+  <button id="btn-reload" title="Reload bundles from disk">Reload</button>
+</header>
+<div id="banner" class="banner hidden"></div>
+<main>
+  <div id="list-pane">
+    <div class="filters">
+      <select id="filter-class">
+        <option value="">All predicted classes</option>
+        <option value="accidental_regression">Regression</option>
+        <option value="intentional_redesign">Redesign</option>
+        <option value="platform_constraint">Platform</option>
+      </select>
+      <select id="filter-label">
+        <option value="">Labeled + unlabeled</option>
+        <option value="unlabeled">Unlabeled only</option>
+        <option value="labeled">Labeled only</option>
+      </select>
+    </div>
+    <table>
+      <thead>
+        <tr><th></th><th>Sample</th><th>Predicted</th><th>P(reg)</th><th>Src</th></tr>
+      </thead>
+      <tbody id="bundle-rows"></tbody>
+    </table>
+  </div>
+  <div id="detail-pane"><div class="empty">Select a diff on the left.<br/><br/>
+    Shortcuts once selected: <span class="kbd">a</span> approve (redesign) ·
+    <span class="kbd">r</span> regression · <span class="kbd">p</span> platform ·
+    <span class="kbd">j</span>/<span class="kbd">k</span> next/prev</div></div>
+</main>
+<script>
+const CLASS_LABELS = {
+  accidental_regression: "Regression",
+  intentional_redesign: "Redesign",
+  platform_constraint: "Platform",
+};
+let state = { bundles: [], selected: null, labelStatus: null, tabicl: null };
+
+async function fetchJSON(url, opts) {
+  const resp = await fetch(url, opts);
+  if (!resp.ok) {
+    const body = await resp.text();
+    throw new Error(`${resp.status}: ${body}`);
+  }
+  return resp.json();
+}
+
+async function loadList() {
+  const data = await fetchJSON("/ui/api/bundles");
+  state.bundles = data.bundles;
+  state.labelStatus = data.labelStatus;
+  state.tabicl = data.tabicl;
+  renderBanner();
+  renderList();
+  renderProgress();
+}
+
+function renderProgress() {
+  const s = state.labelStatus;
+  if (!s) return;
+  document.getElementById("label-progress").textContent =
+    `${s.labeled}/${s.total} labeled · reg ${s.perClass.accidental_regression} / red ${s.perClass.intentional_redesign} / plat ${s.perClass.platform_constraint}`;
+}
+
+function renderBanner() {
+  const el = document.getElementById("banner");
+  const s = state.labelStatus;
+  const t = state.tabicl || {};
+  if (s && s.insufficientData) {
+    const missing = s.remainingToMinContext;
+    el.textContent = missing > 0
+      ? `Insufficient data for the TabICL model — ${missing} more verdicts needed (minimum ${s.minContextRows}, ${s.minClassExamples} per class). Heuristic triage only, badged "heuristic".`
+      : `Insufficient data for the TabICL model — ${s.insufficientReason}. Heuristic triage only, badged "heuristic".`;
+    el.classList.remove("hidden");
+  } else if (t.state === "stale") {
+    el.textContent = `TabICL cache invalidated (${t.reason}) — showing heuristic triage. Click "Run TabICL" to recompute.`;
+    el.classList.remove("hidden");
+  } else {
+    el.classList.add("hidden");
+  }
+}
+
+function renderList() {
+  const classFilter = document.getElementById("filter-class").value;
+  const labelFilter = document.getElementById("filter-label").value;
+  const rows = state.bundles.filter((b) => {
+    if (classFilter && b.triageClass !== classFilter) return false;
+    if (labelFilter === "unlabeled" && b.verdict) return false;
+    if (labelFilter === "labeled" && !b.verdict) return false;
+    return true;
+  });
+  const tbody = document.getElementById("bundle-rows");
+  tbody.innerHTML = "";
+  for (const b of rows) {
+    const tr = document.createElement("tr");
+    tr.className = "row" + (state.selected === b.sampleId ? " selected" : "");
+    tr.dataset.sampleId = b.sampleId;
+    tr.innerHTML = `
+      <td class="verdict-dot">${b.verdict ? "✓" : ""}</td>
+      <td>${b.sampleId}<br/><span class="prob">${b.scenario} · ${b.viewport} · ${b.browser}</span></td>
+      <td><span class="badge ${b.triageClass}">${CLASS_LABELS[b.triageClass] || b.triageClass}</span></td>
+      <td class="prob">${(b.regressionProbability ?? 0).toFixed(2)}</td>
+      <td><span class="badge source ${b.source}">${b.source}</span></td>`;
+    tr.addEventListener("click", () => select(b.sampleId));
+    tbody.appendChild(tr);
+  }
+}
+
+async function select(sampleId) {
+  state.selected = sampleId;
+  renderList();
+  const d = await fetchJSON(`/ui/api/bundles/${encodeURIComponent(sampleId)}`);
+  renderDetail(d);
+}
+
+function shapRows(features) {
+  if (!features || !features.length) return "<div class='prob'>—</div>";
+  const maxAbs = Math.max(...features.map((f) => Math.abs(f.shap)), 1e-9);
+  return features
+    .map((f) => {
+      const pct = Math.min(Math.abs(f.shap) / maxAbs, 1) * 50;
+      const cls = f.shap >= 0 ? "pos" : "neg";
+      return `<div class="shap-row">
+        <div class="shap-name">${f.feature}</div>
+        <div class="shap-bar-wrap"><div class="shap-bar ${cls}" style="width:${pct}%"></div></div>
+        <div class="shap-val">${f.shap.toFixed(4)}</div>
+      </div>`;
+    })
+    .join("");
+}
+
+function renderDetail(d) {
+  const t = d.triage;
+  const probs = t.probabilities || {};
+  const imgs = ["baseline", "test", "diff"]
+    .filter((k) => d.images[k])
+    .map(
+      (k) =>
+        `<figure><figcaption>${k}</figcaption><img src="${d.images[k]}" alt="${k}" /></figure>`
+    )
+    .join("");
+  const conformal = t.conformal || {};
+  const verdictBtn = (cls, label, css, key) => `
+    <button class="v-${css} ${d.verdict === cls ? "active" : ""}" data-verdict="${cls}">
+      ${label} <span class="kbd">${key}</span>
+    </button>`;
+  const pane = document.getElementById("detail-pane");
+  pane.innerHTML = `
+    <h2 style="margin:0 0 4px">${d.sampleId}</h2>
+    <div class="prob">${d.scenario} · ${d.viewport} · ${d.browser} · run ${d.runId} · ${d.createdAt}</div>
+
+    <div class="verdict-bar">
+      ${verdictBtn("intentional_redesign", "Redesign / approve", "redesign", "a")}
+      ${verdictBtn("accidental_regression", "Regression", "regression", "r")}
+      ${verdictBtn("platform_constraint", "Platform constraint", "platform", "p")}
+      ${d.verdict ? `<span class="prob">labeled ${d.verdictAt || ""} (${d.verdictSource || ""})</span>` : ""}
+    </div>
+
+    <div class="probs">
+      <span class="badge ${t.class}">${CLASS_LABELS[t.class] || t.class}</span>
+      <span class="badge source ${t.source}">${t.source}</span>
+      ${Object.entries(probs)
+        .map(([k, v]) => `<span class="p prob">${CLASS_LABELS[k]}: ${v == null ? "—" : Number(v).toFixed(3)}</span>`)
+        .join("")}
+      <span class="prob">autoTriage: ${conformal.autoTriage ? "yes" : "no"}${conformal.deferReason ? ` (${conformal.deferReason})` : ""}</span>
+    </div>
+
+    <div class="images">${imgs || "<div class='prob'>No images in this bundle.</div>"}</div>
+
+    <div class="meta-grid">
+      <div class="cell"><div class="k">Mismatch</div><div class="v">${d.misMatchPercentage.toFixed(3)}%</div></div>
+      <div class="cell"><div class="k">Diff pixels</div><div class="v">${d.diffPixels}</div></div>
+      <div class="cell"><div class="k">Dimensions</div><div class="v">${d.dimensions.width}×${d.dimensions.height}</div></div>
+      <div class="cell"><div class="k">Shift</div><div class="v">${d.hasShift ? `yes (${d.shiftRegions.length})` : "no"}</div></div>
+      <div class="cell"><div class="k">History entries</div><div class="v">${d.historyCount}</div></div>
+      <div class="cell"><div class="k">CI</div><div class="v">${d.ci ? (d.ci.branch || d.ci.commitSha || "yes") : "—"}</div></div>
+    </div>
+
+    <h3>${t.source === "tabicl" ? "Top SHAP features" : "Heuristic reasons"}</h3>
+    ${shapRows(t.topFeatures)}
+
+    ${d.intentSignals ? `<h3>Intent signals</h3><pre>${JSON.stringify(d.intentSignals, null, 2)}</pre>` : ""}
+  `;
+  pane.querySelectorAll("[data-verdict]").forEach((btn) => {
+    btn.addEventListener("click", () => setVerdict(d.sampleId, btn.dataset.verdict));
+  });
+}
+
+async function setVerdict(sampleId, verdict) {
+  await fetchJSON("/ui/api/verdict", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sampleId, verdict }),
+  });
+  await loadList();
+  await select(sampleId);
+}
+
+function moveSelection(delta) {
+  const visible = Array.from(document.querySelectorAll("#bundle-rows tr.row"));
+  if (!visible.length) return;
+  const idx = visible.findIndex((tr) => tr.dataset.sampleId === state.selected);
+  const next = visible[Math.min(Math.max(idx + delta, 0), visible.length - 1)];
+  if (next) select(next.dataset.sampleId);
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+  if (!state.selected && !["j", "k"].includes(e.key)) return;
+  if (e.key === "a") setVerdict(state.selected, "intentional_redesign");
+  else if (e.key === "r") setVerdict(state.selected, "accidental_regression");
+  else if (e.key === "p") setVerdict(state.selected, "platform_constraint");
+  else if (e.key === "j") moveSelection(1);
+  else if (e.key === "k") moveSelection(-1);
+});
+
+document.getElementById("filter-class").addEventListener("change", renderList);
+document.getElementById("filter-label").addEventListener("change", renderList);
+document.getElementById("btn-reload").addEventListener("click", loadList);
+document.getElementById("btn-tabicl").addEventListener("click", async () => {
+  const btn = document.getElementById("btn-tabicl");
+  btn.disabled = true;
+  btn.textContent = "Running…";
+  try {
+    await fetchJSON("/ui/api/refresh-tabicl", { method: "POST" });
+    await loadList();
+    if (state.selected) await select(state.selected);
+  } catch (err) {
+    alert("TabICL run failed: " + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Run TabICL";
+  }
+});
+
+loadList();
+</script>
+</body>
+</html>

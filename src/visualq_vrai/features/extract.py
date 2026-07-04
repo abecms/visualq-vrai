@@ -9,7 +9,7 @@ from typing import Any
 
 import numpy as np
 
-from visualq_vrai.features.spatial import extract_spatial_features
+from visualq_vrai.features.spatial import SpatialFeatures, extract_spatial_features
 from visualq_vrai.schema.bundle import DiffBundle, ElementDiffResult
 from visualq_vrai.schema.feature_spec import (
     AI_CATEGORIES,
@@ -56,6 +56,40 @@ def _viewport_class(width: float) -> str:
 
 INTERACTIVE_TAGS = {"button", "a", "input", "select", "textarea"}
 
+# Minimum relative IoU for a sibling diff to count as "same zone" across pages.
+SAME_ZONE_IOU_THRESHOLD = 0.1
+
+
+def _bbox_iou(
+    a: tuple[float, float, float, float],
+    b: tuple[float, float, float, float],
+) -> float:
+    """IoU of two (x, y, w, h) boxes in the same coordinate space."""
+    ax0, ay0, aw, ah = a
+    bx0, by0, bw, bh = b
+    ix0 = max(ax0, bx0)
+    iy0 = max(ay0, by0)
+    ix1 = min(ax0 + aw, bx0 + bw)
+    iy1 = min(ay0 + ah, by0 + bh)
+    iw = max(ix1 - ix0, 0.0)
+    ih = max(iy1 - iy0, 0.0)
+    intersection = iw * ih
+    union = aw * ah + bw * bh - intersection
+    if union <= 0:
+        return 0.0
+    return intersection / union
+
+
+def _rel_bbox(
+    bbox: tuple[float, float, float, float],
+    width: float,
+    height: float,
+) -> tuple[float, float, float, float] | None:
+    if width <= 0 or height <= 0:
+        return None
+    x, y, w, h = bbox
+    return (x / width, y / height, w / width, h / height)
+
 
 def _section_affected(elements: list[ElementDiffResult] | None, keywords: set[str]) -> float:
     if not elements:
@@ -79,6 +113,31 @@ def _section_affected(elements: list[ElementDiffResult] | None, keywords: set[st
     return 0.0
 
 
+def _spatial_recurrence_iou(
+    bundle: DiffBundle,
+    current_bbox: tuple[float, float, float, float] | None,
+) -> float:
+    """Max IoU of the current diff bbox against historically approved diff zones.
+
+    High value = the diff recurs in a zone humans already approved (known
+    dynamic area) — a strong platform/intentional signal. NaN when the current
+    bbox or approved history bboxes are unavailable: absence of evidence is
+    never encoded as 0 overlap.
+    """
+    if current_bbox is None:
+        return float("nan")
+    approved = [
+        h.diffBBox
+        for h in bundle.history
+        if h.verdict == "intentional_redesign" and h.diffBBox is not None
+    ]
+    if not approved:
+        return float("nan")
+    return max(
+        _bbox_iou(current_bbox, (b.x, b.y, b.width, b.height)) for b in approved
+    )
+
+
 def _historical_stats(bundle: DiffBundle) -> dict[str, float]:
     history = sorted(bundle.history, key=lambda h: h.createdAt)
     if len(history) < 3:
@@ -91,7 +150,6 @@ def _historical_stats(bundle: DiffBundle) -> dict[str, float]:
             "mismatch_zscore",
             "runs_since_baseline_update",
             "days_since_last_fail_log",
-            "spatial_recurrence_iou",
             "consecutive_fail_streak",
         ]}
 
@@ -137,12 +195,56 @@ def _historical_stats(bundle: DiffBundle) -> dict[str, float]:
         "mismatch_zscore": zscore,
         "runs_since_baseline_update": runs_since_baseline,
         "days_since_last_fail_log": days_since_fail,
-        "spatial_recurrence_iou": float("nan"),
         "consecutive_fail_streak": float(streak),
     }
 
 
-def _cross_view_features(bundle: DiffBundle) -> dict[str, float]:
+def _same_zone_cross_page_fraction(
+    bundle: DiffBundle,
+    current_rel_bbox: tuple[float, float, float, float] | None,
+) -> float:
+    """Fraction of other-scenario siblings failing in the same relative zone.
+
+    High value = a shared component (header, footer, nav) changed across
+    pages in the same run — a strong intentional-redesign signal. Relative
+    coordinates make the comparison page-size invariant. NaN when there is
+    no cross-page evidence to assess.
+    """
+    if current_rel_bbox is None:
+        return float("nan")
+    others = [
+        s for s in bundle.runContext.siblingResults
+        if s.scenario != bundle.diff.scenario
+    ]
+    if not others:
+        return float("nan")
+    matches = 0
+    for sibling in others:
+        if sibling.status != "fail" or sibling.diffBBox is None:
+            continue
+        s_width = float(sibling.dimensions.get("width", 0))
+        s_height = float(sibling.dimensions.get("height", 0))
+        rel = _rel_bbox(
+            (
+                sibling.diffBBox.x,
+                sibling.diffBBox.y,
+                sibling.diffBBox.width,
+                sibling.diffBBox.height,
+            ),
+            s_width,
+            s_height,
+        )
+        if rel is None:
+            continue
+        if _bbox_iou(current_rel_bbox, rel) >= SAME_ZONE_IOU_THRESHOLD:
+            matches += 1
+    return matches / len(others)
+
+
+def _cross_view_features(
+    bundle: DiffBundle,
+    current_rel_bbox: tuple[float, float, float, float] | None,
+) -> dict[str, float]:
     siblings = bundle.runContext.siblingResults
     if not siblings:
         return {
@@ -175,7 +277,9 @@ def _cross_view_features(bundle: DiffBundle) -> dict[str, float]:
         "browser_fail_fraction": float(np.mean(browser_fails)) if browser_fails else float("nan"),
         "only_this_browser": only_this_browser,
         "run_fail_fraction": float(np.mean(all_fails)) if all_fails else float("nan"),
-        "same_zone_cross_page_fraction": float("nan"),
+        "same_zone_cross_page_fraction": _same_zone_cross_page_fraction(
+            bundle, current_rel_bbox
+        ),
     }
 
 
@@ -277,7 +381,44 @@ def featurize_bundle(bundle: DiffBundle) -> dict[str, Any]:
         candidate = repo_root / diff_png
         if candidate.is_file():
             diff_png = str(candidate)
-    spatial = extract_spatial_features(diff_png, int(width), int(height))
+    if diff.spatial is not None:
+        # Worker-provided stats (raw) — apply the same transforms the
+        # PNG path applies. One declared source per bundle, no blending.
+        s = diff.spatial
+        spatial = SpatialFeatures(
+            region_count_log=_log1p(s.regionCount),
+            largest_region_area_ratio=s.largestRegionAreaRatio,
+            top3_region_area_ratio=s.top3RegionAreaRatio,
+            region_concentration=s.regionConcentration,
+            centroid_y_rel=s.centroidYRel if s.centroidYRel is not None else float("nan"),
+            centroid_x_rel=s.centroidXRel if s.centroidXRel is not None else float("nan"),
+            bbox_coverage_w=s.bboxCoverageW,
+            bbox_coverage_h=s.bboxCoverageH,
+            touches_edge_count=s.touchesEdgeCount,
+            mean_region_compactness=(
+                s.meanRegionCompactness if s.meanRegionCompactness is not None else float("nan")
+            ),
+            isolated_pixel_ratio=s.isolatedPixelRatio,
+            max_region_aspect=s.maxRegionAspect if s.maxRegionAspect is not None else float("nan"),
+            union_bbox_px=None,
+        )
+    else:
+        spatial = extract_spatial_features(diff_png, int(width), int(height))
+
+    # Current diff bbox: worker-provided diffBBox is the declared source when
+    # present (Phase 2 parity); otherwise derived from the diff PNG regions.
+    if diff.diffBBox is not None:
+        current_bbox = (
+            diff.diffBBox.x,
+            diff.diffBBox.y,
+            diff.diffBBox.width,
+            diff.diffBBox.height,
+        )
+    else:
+        current_bbox = spatial.union_bbox_px
+    current_rel_bbox = (
+        _rel_bbox(current_bbox, width, height) if current_bbox else None
+    )
 
     elements = diff.elementResults or []
     status_counts = {
@@ -327,6 +468,7 @@ def featurize_bundle(bundle: DiffBundle) -> dict[str, Any]:
         "sampleId": bundle.sampleId,
         "projectId": bundle.projectId,
         "runId": bundle.runContext.runId,
+        "scenario": diff.scenario,
         "createdAt": created.isoformat(),
         # G1
         "mismatch_pct_log": _log1p(diff.misMatchPercentage),
@@ -393,7 +535,8 @@ def featurize_bundle(bundle: DiffBundle) -> dict[str, Any]:
     }
 
     row.update(_historical_stats(bundle))
-    row.update(_cross_view_features(bundle))
+    row["spatial_recurrence_iou"] = _spatial_recurrence_iou(bundle, current_bbox)
+    row.update(_cross_view_features(bundle, current_rel_bbox))
     row.update(_intent_github(bundle))
     row.update(_intent_jira(bundle))
     row.update(_intent_figma(bundle))

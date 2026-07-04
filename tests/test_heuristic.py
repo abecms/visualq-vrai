@@ -1,6 +1,5 @@
 """Tests for heuristic baseline."""
 
-import math
 
 from visualq_vrai.heuristic.triage import triage_heuristic
 from visualq_vrai.schema.bundle import TriageClass
